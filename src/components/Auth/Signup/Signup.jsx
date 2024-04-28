@@ -1,5 +1,6 @@
 import { useState } from "react";
 import api from "../../../config/api";
+import { NavLink } from "react-router-dom";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -31,6 +32,9 @@ const Signup = () => {
   };
 
   return (
+    <>
+<h2>Register</h2>
+    
     <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="name">Name</label>
@@ -69,7 +73,12 @@ const Signup = () => {
       </div>
 
       <button type="submit">Register</button>
+      <br />
+      <span>
+        Already have an account? <NavLink to={"/"}>Login</NavLink>
+      </span>
     </form>
+    </>
   );
 };
 
