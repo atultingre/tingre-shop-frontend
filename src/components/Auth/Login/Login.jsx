@@ -1,21 +1,22 @@
 import { useState } from "react";
 import api from "../../../config/api";
 import { useStore } from "../../../context/StoreContext";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setToken } = useStore();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await api("POST", "/user/login", { email, password });
-      localStorage.setItem("token", response.token);
-      setToken(response.token);
-      console.log("response: ", response.token);
+      const token = localStorage.setItem("token", response.token);
+      setToken(token);
+      navigate("/");
     } catch (error) {
       console.error("Login Error:", error);
     }

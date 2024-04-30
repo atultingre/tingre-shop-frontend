@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import Dashboard from "../Dashboard/Dashboard";
+import Dashboard from "./Dashboard/Dashboard";
 
 const Layout = () => {
   return (

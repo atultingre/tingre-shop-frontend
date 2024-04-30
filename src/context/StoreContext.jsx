@@ -6,6 +6,9 @@ export const StoreContext = createContext(null);
 const StoreContextProvider = ({ children }) => {
   const [token, setToken] = useState("");
   const [products, setProducts] = useState([]);
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, [token]);
 
   useEffect(() => {
     fetchProducts();
