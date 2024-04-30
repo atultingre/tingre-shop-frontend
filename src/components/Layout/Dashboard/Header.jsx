@@ -1,7 +1,12 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useNavigate } from "react-router-dom";
+import {
+  Bars3Icon,
+  BellIcon,
+  ShoppingCartIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useStore } from "../../../context/StoreContext";
 
 function classNames(...classes) {
@@ -15,8 +20,13 @@ const Header = () => {
     imageUrl:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   };
-  const navigation = [{ name: "Dashboard", href: "#", current: true }];
-  
+
+  const navigation = [
+    { name: "Product List", to: "/list", current: false },
+    { name: "Add Product", to: "/add", current: false },
+    { name: "Orders", to: "/orders", current: false },
+  ];
+
   const { setToken } = useStore();
   const navigate = useNavigate();
 
@@ -45,20 +55,23 @@ const Header = () => {
                     )}
                   </Disclosure.Button>
                 </div>
+
                 <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                  <div className="flex flex-shrink-0 items-center">
-                    <img
-                      className="h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                      alt="Your Company"
-                    />
-                  </div>
+                  <NavLink to={"/"}>
+                    <div className="flex flex-shrink-0 items-center">
+                      <img
+                        className="h-8 w-auto"
+                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                        alt="Tingre Shop"
+                      />
+                    </div>
+                  </NavLink>
                   <div className="hidden sm:ml-6 sm:block">
                     <div className="flex space-x-4">
                       {navigation.map((item) => (
-                        <a
+                        <NavLink
                           key={item.name}
-                          href={item.href}
+                          to={item.to}
                           className={classNames(
                             item.current
                               ? "bg-gray-900 text-white"
@@ -68,7 +81,7 @@ const Header = () => {
                           aria-current={item.current ? "page" : undefined}
                         >
                           {item.name}
-                        </a>
+                        </NavLink>
                       ))}
                     </div>
                   </div>
@@ -79,8 +92,8 @@ const Header = () => {
                     className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                   >
                     <span className="absolute -inset-1.5" />
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
+                    <span className="sr-only">View Shopping Cart</span>
+                    <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
 
                   {/* Profile dropdown */}
@@ -130,10 +143,9 @@ const Header = () => {
             <Disclosure.Panel className="sm:hidden">
               <div className="space-y-1 px-2 pb-3 pt-2">
                 {navigation.map((item) => (
-                  <Disclosure.Button
+                  <NavLink
+                    to={item.to}
                     key={item.name}
-                    as="a"
-                    href={item.href}
                     className={classNames(
                       item.current
                         ? "bg-gray-900 text-white"
@@ -143,7 +155,7 @@ const Header = () => {
                     aria-current={item.current ? "page" : undefined}
                   >
                     {item.name}
-                  </Disclosure.Button>
+                  </NavLink>
                 ))}
               </div>
             </Disclosure.Panel>

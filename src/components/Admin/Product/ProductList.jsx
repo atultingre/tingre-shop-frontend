@@ -43,11 +43,13 @@ const ProductList = () => {
       title: "Price",
       dataIndex: "price",
       key: "price",
+      sorter: (a, b) => a.price - b.price,
     },
     {
       title: "Category",
       dataIndex: "category",
       key: "category",
+      sorter: (a, b) => a.category.localeCompare(b.category),
     },
     {
       title: "Image",
@@ -71,9 +73,6 @@ const ProductList = () => {
 
   return (
     <div>
-      <Button type="primary" onClick={() => navigate("/add")}>
-        Add Product
-      </Button>
       <Table columns={columns} dataSource={products} rowKey="_id" />
       {editingProduct && <ProductForm initialValues={editingProduct} />}
     </div>

@@ -8,6 +8,7 @@ import Register from "./components/Auth/Register/Register";
 import NotFound from "./components/NotFound/NotFound";
 import Layout from "./components/Layout/Layout";
 import { useStore } from "./context/StoreContext";
+import Product from "./components/frontend/Product/Product";
 
 const App = () => {
   const { token } = useStore();
@@ -27,10 +28,10 @@ const App = () => {
           path="/"
           element={token ? <Layout /> : <Navigate to={"/login"} />}
         >
-          <Route path="/" element={<ProductList />} />
+          <Route path="/" element={<Product />} />
+          <Route path="/list" element={<ProductList />} />
           <Route path="/add" element={<ProductForm />} />
         </Route>
-
         <Route path="*" element={<NotFound />} />
       </Routes>
       <ToastContainer />
