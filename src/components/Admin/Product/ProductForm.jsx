@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useStore } from "../../context/StoreContext";
-import api from "../../config/api";
-import firebase from "../../config/firebase";
-import { assets } from "../../assets/assets";
+import firebase from "../../../config/firebase";
+import { assets } from "../../../assets/assets";
+import { useStore } from "../../../context/StoreContext";
+import api from "../../../config/api";
 
 const ProductForm = ({ initialValues }) => {
   const { fetchProducts } = useStore();
