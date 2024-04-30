@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -8,12 +8,14 @@ import {
 } from "@heroicons/react/24/outline";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useStore } from "../../../context/StoreContext";
+import ShoppingCart from "../../frontend/Product/ShoppingCart";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const Header = () => {
+  const [showCart, setShowCart] = useState(false);
   const user = {
     name: "Tom Cook",
     email: "tom@example.com",
@@ -90,6 +92,7 @@ const Header = () => {
                   <button
                     type="button"
                     className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                    onClick={() => setShowCart((prevState) => !prevState)}
                   >
                     <span className="absolute -inset-1.5" />
                     <span className="sr-only">View Shopping Cart</span>
@@ -162,6 +165,8 @@ const Header = () => {
           </>
         )}
       </Disclosure>
+
+      {showCart && <ShoppingCart />}
     </div>
   );
 };
