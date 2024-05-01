@@ -11,6 +11,7 @@ import { useStore } from "./context/StoreContext";
 import Product from "./components/frontend/Product/Product";
 import ShoppingCart from "./components/frontend/Cart/ShoppingCart";
 import Order from "./components/frontend/Order/Order";
+import MyOrders from "./components/frontend/MyOrders/MyOrders";
 
 const App = () => {
   const { token } = useStore();
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="/add" element={<ProductForm />} />
           <Route path="/cart" element={<ShoppingCart />} />
           <Route path="/order" element={<Order />} />
+          <Route path="/myorders" element={<MyOrders />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

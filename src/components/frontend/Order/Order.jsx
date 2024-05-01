@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useStore } from "../../../context/StoreContext";
+import api from "../../../config/api";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Order = () => {
   const {
@@ -9,7 +12,9 @@ const Order = () => {
     removeFormCart,
     addToCart,
     getTotalCartAmount,
+    token,
     navigate,
+    url,
   } = useStore();
 
   const [data, setData] = useState({
@@ -33,8 +38,57 @@ const Order = () => {
 
   const placeOrder = async (event) => {
     event.preventDefault();
-    console.log("place order form Data", data);
+    let orderItems = [];
+
+    products.map((item) => {
+      if (cartItems[item._id] > 0) {
+        let itemInfo = item;
+        itemInfo["quantity"] = cartItems[item._id];
+        orderItems.push(itemInfo);
+      }
+    });
+    console.log("data.firstName: ", data.firstName);
+    let orderData = {
+      address: {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phone: data.phone,
+        street: data.street,
+        city: data.city,
+        state: data.state,
+        zipcode: data.zipcode,
+        country: data.country,
+      },
+      items: orderItems,
+      amount: getTotalCartAmount() + deliveryCost,
+    };
+    console.log("orderData: ", orderData);
+
+    let response = await axios.post(`${url}/api/order/place`, orderData, {
+      headers: { token },
+    });
+    console.log("response: ", response);
+
+    if (response.data.success === true) {
+      toast.success(response.data.message);
+      navigate("/myorders");
+      // stripe payment integration
+      // const { session_url } = response.data;
+      // window.location.replace(session_url);
+    } else {
+      toast.error("Error placing order.");
+    }
   };
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/cart");
+    } else if (getTotalCartAmount() === 0) {
+      navigate("/");
+    }
+  }, [token]);
+
   return (
     <div className="mt-10 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
       <form onSubmit={placeOrder}>
