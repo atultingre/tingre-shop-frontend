@@ -9,6 +9,8 @@ import NotFound from "./components/NotFound/NotFound";
 import Layout from "./components/Layout/Layout";
 import { useStore } from "./context/StoreContext";
 import Product from "./components/frontend/Product/Product";
+import ShoppingCart from "./components/frontend/Cart/ShoppingCart";
+import Order from "./components/frontend/Order/Order";
 
 const App = () => {
   const { token } = useStore();
@@ -31,6 +33,8 @@ const App = () => {
           <Route path="/" element={<Product />} />
           <Route path="/list" element={<ProductList />} />
           <Route path="/add" element={<ProductForm />} />
+          <Route path="/cart" element={<ShoppingCart />} />
+          <Route path="/order" element={<Order />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

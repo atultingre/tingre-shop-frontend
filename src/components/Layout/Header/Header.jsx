@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useStore } from "../../../context/StoreContext";
-import ShoppingCart from "../../frontend/Product/ShoppingCart";
+import ShoppingCart from "../../frontend/Cart/ShoppingCart";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -16,6 +16,10 @@ function classNames(...classes) {
 
 const Header = () => {
   const [showCart, setShowCart] = useState(false);
+  const { getTotalCartAmount, setToken } = useStore();
+  console.log("getTotalCartAmount: ", getTotalCartAmount());
+  const navigate = useNavigate();
+
   const user = {
     name: "Tom Cook",
     email: "tom@example.com",
@@ -29,17 +33,17 @@ const Header = () => {
     { name: "Orders", to: "/orders", current: false },
   ];
 
-  const { setToken } = useStore();
-  const navigate = useNavigate();
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     setToken("");
     navigate("/login");
   };
 
+  const handleShowCart = () => {
+    setShowCart((prevState) => !prevState);
+  };
   return (
-    <div>
+    <div className="fixed top-0 w-full z-10">
       <Disclosure as="nav" className="bg-gray-800">
         {({ open }) => (
           <>
@@ -91,12 +95,17 @@ const Header = () => {
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   <button
                     type="button"
-                    className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                    onClick={() => setShowCart((prevState) => !prevState)}
+                    className="relative rounded-full bg-gray-800 cursor-pointer p-1 text-gray-400 hover:text-white "
+                    onClick={handleShowCart}
                   >
                     <span className="absolute -inset-1.5" />
                     <span className="sr-only">View Shopping Cart</span>
                     <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
+                    {getTotalCartAmount() === 0 ? (
+                      ""
+                    ) : (
+                      <div className="absolute min-h-[10px] rounded-full min-w-[10px] bg-[tomato] top-[4px] right-[1px]"></div>
+                    )}
                   </button>
 
                   {/* Profile dropdown */}
@@ -165,7 +174,6 @@ const Header = () => {
           </>
         )}
       </Disclosure>
-
       {showCart && <ShoppingCart />}
     </div>
   );
