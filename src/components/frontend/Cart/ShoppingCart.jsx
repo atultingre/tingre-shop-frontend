@@ -16,6 +16,11 @@ const ShoppingCart = () => {
     navigate,
   } = useStore();
 
+  const handleCheckout = () => {
+    navigate("/order");
+    setOpen(false);
+  };
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -162,7 +167,7 @@ const ShoppingCart = () => {
                         </div>
                         <div className="mt-6">
                           <button
-                            onClick={() => navigate("/order")}
+                            onClick={handleCheckout}
                             className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                           >
                             Checkout
