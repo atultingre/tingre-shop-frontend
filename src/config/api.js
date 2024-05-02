@@ -3,8 +3,8 @@ import { toast } from "react-toastify";
 
 const api = async (method, url, data = null, headers = {}) => {
   try {
-    const apiUrl = `http://localhost:8000/api${url}`;
-    // const apiUrl = `https://tingre-shop-backend.onrender.com/api${url}`;
+    // const apiUrl = `http://localhost:8000/api${url}`;
+    const apiUrl = `https://tingre-shop-backend.onrender.com/api${url}`;
 
     const config = {
       method,
