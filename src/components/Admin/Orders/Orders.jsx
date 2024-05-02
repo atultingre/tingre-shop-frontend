@@ -23,7 +23,19 @@ const Orders = () => {
   };
 
   const statusHandler = async (value, orderId) => {
-    // Handle status change here
+    console.log("value: ", value);
+    try {
+      const response = await api("POST", "/order/status", {
+        orderId,
+        status: value,
+      });
+      console.log("response: ", response);
+      if (response.success) {
+        await fetchAllOrders();
+      }
+    } catch (error) {
+      console.log("error: ", error);
+    }
   };
 
   useEffect(() => {
@@ -77,25 +89,20 @@ const Orders = () => {
       dataIndex: ["address", 0, "phone"],
       key: "phone",
     },
-    // {
-    //   title: "Items Count",
-    //   dataIndex: "items",
-    //   key: "itemsCount",
-    //   render: (items) => items.length,
-    // },
-
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
       render: (status, record) => (
         <Select
+          className="min-w-[145px]"
           value={status}
           onChange={(value) => statusHandler(value, record._id)}
         >
           <Option value="Food Processing">Food Processing</Option>
-          <Option value="Out for delivery">Out for delivery</Option>
+          <Option value="Dispatched">Dispatched</Option>
           <Option value="Delivered">Delivered</Option>
+          <Option value="Cancelled">Cancelled</Option>
         </Select>
       ),
     },
