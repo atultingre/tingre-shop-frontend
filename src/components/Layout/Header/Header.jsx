@@ -29,7 +29,7 @@ const Header = () => {
   const navigation = [
     { name: "Product List", to: "/list", current: false },
     { name: "Add Product", to: "/add", current: false },
-    { name: "Order", to: "/myorders", current: false },
+    { name: "Order", to: "/orders", current: false },
   ];
 
   const handleLogout = () => {

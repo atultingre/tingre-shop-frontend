@@ -4,7 +4,7 @@ import api from "../../../config/api";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const Order = () => {
+const PlaceOrder = () => {
   const {
     products,
     deliveryCost,
@@ -320,4 +320,4 @@ const Order = () => {
   );
 };
 
-export default Order;
+export default PlaceOrder;
