@@ -83,7 +83,7 @@ const AddProduct = ({ initialValues }) => {
 
   return (
     <div className="mt-5 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="space-y-4">
           <div className="pb-12">
             <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -211,6 +211,7 @@ const AddProduct = ({ initialValues }) => {
                           name="image"
                           type="file"
                           className="sr-only"
+                          onChange={handleImageUpload}
                         />
                       </label>
                       <p className="pl-1">or drag and drop</p>
