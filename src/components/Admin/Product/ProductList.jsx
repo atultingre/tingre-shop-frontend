@@ -1,10 +1,10 @@
 // ProductList.js
 import { useState } from "react";
-import ProductForm from "./ProductForm";
 import { useNavigate } from "react-router-dom";
 import { Table, Button, Space } from "antd";
 import { useStore } from "../../../context/StoreContext";
 import api from "../../../config/api";
+import AddProduct from "./AddProduct";
 
 const ProductList = () => {
   const { fetchProducts, products } = useStore();
@@ -74,7 +74,7 @@ const ProductList = () => {
   return (
     <div>
       <Table columns={columns} dataSource={products} rowKey="_id" />
-      {editingProduct && <ProductForm initialValues={editingProduct} />}
+      {editingProduct && <AddProduct initialValues={editingProduct} />}
     </div>
   );
 };

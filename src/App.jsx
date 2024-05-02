@@ -2,7 +2,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Login from "./components/Auth/Login/Login";
 import { Routes, Route, Navigate } from "react-router-dom";
-import ProductForm from "./components/Admin/Product/ProductForm";
 import ProductList from "./components/Admin/Product/ProductList";
 import Register from "./components/Auth/Register/Register";
 import NotFound from "./components/NotFound/NotFound";
@@ -13,6 +12,7 @@ import ShoppingCart from "./components/frontend/Cart/ShoppingCart";
 import MyOrders from "./components/frontend/MyOrders/MyOrders";
 import PlaceOrder from "./components/frontend/PlaceOrder/PlaceOrder";
 import Orders from "./components/Admin/Orders/Orders";
+import AddProduct from "./components/Admin/Product/AddProduct";
 
 const App = () => {
   const { token } = useStore();
@@ -34,7 +34,7 @@ const App = () => {
         >
           <Route path="/" element={<Product />} />
           <Route path="/list" element={<ProductList />} />
-          <Route path="/add" element={<ProductForm />} />
+          <Route path="/add" element={<AddProduct />} />
           <Route path="/cart" element={<ShoppingCart />} />
           <Route path="/place" element={<PlaceOrder />} />
           <Route path="/orders" element={<Orders />} />
