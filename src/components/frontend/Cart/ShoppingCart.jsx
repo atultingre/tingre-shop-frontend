@@ -17,7 +17,7 @@ const ShoppingCart = () => {
   } = useStore();
 
   const handleCheckout = () => {
-    navigate("/order");
+    navigate("/place");
     setOpen(false);
   };
 
