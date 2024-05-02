@@ -1,11 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "../config/api";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({});
+  const [isAdmin, setIsAdmin] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
   // () => {
   //   const storedCartItems = localStorage.getItem("cartItems");
@@ -20,6 +23,10 @@ const StoreContextProvider = ({ children }) => {
 
   useEffect(() => {
     setToken(localStorage.getItem("token"));
+    setUserEmail(localStorage.getItem("email"));
+    setUserName(localStorage.getItem("name"));
+    const admin = JSON.parse(localStorage.getItem("isAdmin"));
+    setIsAdmin(admin);
   }, [token]);
 
   useEffect(() => {
@@ -56,7 +63,7 @@ const StoreContextProvider = ({ children }) => {
       {},
       { headers: { token } }
     );
-    setCartItems(response.data.cartData);
+    setCartItems(response?.data?.cartData);
   };
 
   const addToCart = async (itemId) => {
@@ -76,20 +83,6 @@ const StoreContextProvider = ({ children }) => {
 
   const removeFormCart = async (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
-    // if (cartItems[itemId]) {
-    //   // Decrease the quantity of the item
-    //   setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
-
-    //   // Remove the item from the cart if the quantity becomes 0
-    //   if (cartItems[itemId] === 1) {
-    //     const updatedCartItems = { ...cartItems };
-    //     delete updatedCartItems[itemId];
-    //     setCartItems(updatedCartItems);
-    //   }
-
-    //   // Update localStorage
-    //   localStorage.setItem("cartItems", JSON.stringify(cartItems));
-    // }
 
     if (token) {
       await axios.post(
@@ -112,8 +105,18 @@ const StoreContextProvider = ({ children }) => {
     return totalAmount;
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("name");
+    setToken("");
+    navigate("/login");
+  };
+
   const contextValue = {
     token,
+    isAdmin,
     setToken,
     products,
     setProducts,
@@ -126,6 +129,9 @@ const StoreContextProvider = ({ children }) => {
     deliveryCost,
     url,
     navigate,
+    userName,
+    userEmail,
+    handleLogout,
   };
 
   return (

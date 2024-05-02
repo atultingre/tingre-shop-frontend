@@ -15,6 +15,9 @@ const Login = () => {
     try {
       const response = await api("POST", "/user/login", { email, password });
       const token = localStorage.setItem("token", response.token);
+      localStorage.setItem("email", response.email);
+      localStorage.setItem("isAdmin", response.isAdmin);
+      localStorage.setItem("name", response.name);
       setToken(token);
       navigate("/");
     } catch (error) {

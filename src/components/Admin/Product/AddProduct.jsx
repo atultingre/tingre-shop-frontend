@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import firebase from "../../../config/firebase";
-import { assets } from "../../../assets/assets";
 import { useStore } from "../../../context/StoreContext";
 import api from "../../../config/api";
-import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { PhotoIcon } from "@heroicons/react/24/solid";
 
 const AddProduct = ({ initialValues }) => {
   const { fetchProducts } = useStore();

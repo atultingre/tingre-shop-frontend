@@ -15,7 +15,7 @@ import Orders from "./components/Admin/Orders/Orders";
 import AddProduct from "./components/Admin/Product/AddProduct";
 
 const App = () => {
-  const { token } = useStore();
+  const { token, isAdmin } = useStore();
 
   return (
     <div>
@@ -34,9 +34,9 @@ const App = () => {
         >
           <Route path="/" element={<Product />} />
           <Route path="/list" element={<ProductList />} />
-          <Route path="/add" element={<AddProduct />} />
           <Route path="/cart" element={<ShoppingCart />} />
           <Route path="/place" element={<PlaceOrder />} />
+          <Route path="/add" element={<AddProduct />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/myorders" element={<MyOrders />} />
         </Route>

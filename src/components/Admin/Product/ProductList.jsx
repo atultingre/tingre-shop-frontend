@@ -7,7 +7,8 @@ import api from "../../../config/api";
 import AddProduct from "./AddProduct";
 
 const ProductList = () => {
-  const { fetchProducts, products } = useStore();
+  const { fetchProducts, products, isAdmin } = useStore();
+  console.log("isAdmin: ", isAdmin);
   const [editingProduct, setEditingProduct] = useState(null);
   const navigate = useNavigate();
 
@@ -25,10 +26,18 @@ const ProductList = () => {
   };
 
   const handleEdit = (product) => {
-    setEditingProduct(product); // Set the product to be edited
+    setEditingProduct(product);
   };
 
-  const columns = [
+  let columns = [
+    {
+      title: "Image",
+      dataIndex: "image",
+      key: "image",
+      render: (text, record) => (
+        <img src={record.image} alt={record.name} style={{ width: 100 }} />
+      ),
+    },
     {
       title: "Name",
       dataIndex: "name",
@@ -51,14 +60,7 @@ const ProductList = () => {
       key: "category",
       sorter: (a, b) => a.category.localeCompare(b.category),
     },
-    {
-      title: "Image",
-      dataIndex: "image",
-      key: "image",
-      render: (text, record) => (
-        <img src={record.image} alt={record.name} style={{ width: 100 }} />
-      ),
-    },
+
     {
       title: "Action",
       key: "action",
@@ -70,10 +72,20 @@ const ProductList = () => {
       ),
     },
   ];
-
+  if (!isAdmin) {
+    columns = columns.filter((column) => column.key !== "action");
+  }
   return (
-    <div>
-      <Table columns={columns} dataSource={products} rowKey="_id" />
+    <div className="mx-auto max-w-2xl px-3  sm:px-2 sm:py-8 lg:max-w-7xl lg:px-1">
+      <h2 className="flex justify-center text-xl items-center w-full m-auto">
+        products
+      </h2>
+      <Table
+        columns={columns}
+        dataSource={products}
+        rowKey="_id"
+        scroll={{ x: "" }}
+      />
       {editingProduct && <AddProduct initialValues={editingProduct} />}
     </div>
   );
