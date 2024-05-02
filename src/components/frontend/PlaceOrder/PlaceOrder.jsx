@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useStore } from "../../../context/StoreContext";
-import api from "../../../config/api";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -9,12 +8,11 @@ const PlaceOrder = () => {
     products,
     deliveryCost,
     cartItems,
-    removeFormCart,
-    addToCart,
     getTotalCartAmount,
     token,
     navigate,
     url,
+    setCartItems,
   } = useStore();
 
   const [data, setData] = useState({
@@ -72,10 +70,8 @@ const PlaceOrder = () => {
 
     if (response.data.success === true) {
       toast.success(response.data.message);
+      setCartItems({});
       navigate("/myorders");
-      // stripe payment integration
-      // const { session_url } = response.data;
-      // window.location.replace(session_url);
     } else {
       toast.error("Error placing order.");
     }
