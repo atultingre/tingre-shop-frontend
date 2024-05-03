@@ -1,36 +1,23 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "../config/api";
 import axios from "axios";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({});
-  const [isAdmin, setIsAdmin] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userName, setUserName] = useState("");
-  const navigate = useNavigate();
-  // () => {
-  //   const storedCartItems = localStorage.getItem("cartItems");
-  //   return storedCartItems ? JSON.parse(storedCartItems) : {};
-  // }
-
-  const [token, setToken] = useState("");
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
-  const url = "http://localhost:8000";
+  // const url = `http://localhost:8000/api${url}`;
+  const url = `https://tingre-shop-backend.onrender.com/api`;
   const deliveryCost = 1;
+  const isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
+  const token = localStorage.getItem("token");
+  const userEmail = localStorage.getItem("email");
+  const userName = localStorage.getItem("name");
 
   useEffect(() => {
-    setToken(localStorage.getItem("token"));
-    setUserEmail(localStorage.getItem("email"));
-    setUserName(localStorage.getItem("name"));
-    const admin = JSON.parse(localStorage.getItem("isAdmin"));
-    setIsAdmin(admin);
-  }, [token]);
-
-  useEffect(() => {
-    // Update localStorage whenever cartItems change
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
@@ -38,7 +25,6 @@ const StoreContextProvider = ({ children }) => {
     fetchProducts();
     async function loadData() {
       if (localStorage.getItem("token")) {
-        setToken(localStorage.getItem("token"));
         await loadCartData(localStorage.getItem("token"));
       }
     }
@@ -107,17 +93,16 @@ const StoreContextProvider = ({ children }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("cartItems");
+    localStorage.removeItem("name");
     localStorage.removeItem("email");
     localStorage.removeItem("isAdmin");
-    localStorage.removeItem("name");
-    setToken("");
     navigate("/login");
   };
 
   const contextValue = {
     token,
     isAdmin,
-    setToken,
     products,
     setProducts,
     fetchProducts,

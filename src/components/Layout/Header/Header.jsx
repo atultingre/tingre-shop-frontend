@@ -16,7 +16,7 @@ function classNames(...classes) {
 
 const Header = () => {
   const [showCart, setShowCart] = useState(false);
-  const { getTotalCartAmount, setToken } = useStore();
+  const { getTotalCartAmount, isAdmin, handleLogout } = useStore();
   const navigate = useNavigate();
 
   const user = {
@@ -28,15 +28,11 @@ const Header = () => {
 
   const navigation = [
     { name: "Product List", to: "/list", current: false },
-    { name: "Add Product", to: "/add", current: false },
-    { name: "Order", to: "/orders", current: false },
-  ];
+    isAdmin && { name: "Add Product", to: "/add", current: false },
+    isAdmin && { name: "Order", to: "/orders", current: false },
+  ].filter(Boolean);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setToken("");
-    navigate("/login");
-  };
+
 
   const handleShowCart = () => {
     setShowCart((prevState) => !prevState);
@@ -92,21 +88,25 @@ const Header = () => {
                   </div>
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                  <button
-                    type="button"
-                    className="relative rounded-full bg-gray-800 cursor-pointer p-1 text-gray-400 hover:text-white "
-                    onClick={handleShowCart}
-                  >
-                    <span className="absolute -inset-1.5" />
-                    <span className="sr-only">View Shopping Cart</span>
-                    <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
-                    {getTotalCartAmount() === 0 ? (
-                      ""
-                    ) : (
-                      <div className="absolute min-h-[10px] rounded-full min-w-[10px] bg-[tomato] top-[4px] right-[1px]"></div>
-                    )}
-                  </button>
-
+                  {getTotalCartAmount() > 0 && (
+                    <button
+                      type="button"
+                      className="relative rounded-full bg-gray-800 cursor-pointer p-1 text-gray-400 hover:text-white "
+                      onClick={handleShowCart}
+                    >
+                      <span className="absolute -inset-1.5" />
+                      <span className="sr-only">View Shopping Cart</span>
+                      <ShoppingCartIcon
+                        className="h-6 w-6"
+                        aria-hidden="true"
+                      />
+                      {getTotalCartAmount() === 0 ? (
+                        ""
+                      ) : (
+                        <div className="absolute min-h-[10px] rounded-full min-w-[10px] bg-[tomato] top-[4px] right-[1px]"></div>
+                      )}
+                    </button>
+                  )}
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-3">
                     <div>

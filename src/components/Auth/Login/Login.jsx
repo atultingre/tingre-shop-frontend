@@ -1,12 +1,10 @@
 import { useState } from "react";
 import api from "../../../config/api";
-import { useStore } from "../../../context/StoreContext";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setToken } = useStore();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -14,11 +12,10 @@ const Login = () => {
 
     try {
       const response = await api("POST", "/user/login", { email, password });
-      const token = localStorage.setItem("token", response.token);
-      localStorage.setItem("email", response.email);
-      localStorage.setItem("isAdmin", response.isAdmin);
+      localStorage.setItem("token", response?.token);
+      localStorage.setItem("email", response?.email);
+      localStorage.setItem("isAdmin", response?.isAdmin);
       localStorage.setItem("name", response.name);
-      setToken(token);
       navigate("/");
     } catch (error) {
       console.error("Login Error:", error);
