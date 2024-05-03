@@ -11,8 +11,8 @@ const StoreContextProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
-  // const url = `http://localhost:8000/api`;
-  const url = `https://tingre-shop-backend.onrender.com/api`;
+  // const url = `http://localhost:8000`;
+  const url = `https://tingre-shop-backend.onrender.com`;
   const deliveryCost = 1;
   const isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
   const token = localStorage.getItem("token");
@@ -102,6 +102,18 @@ const StoreContextProvider = ({ children }) => {
     navigate("/login");
   };
 
+  const generateInitials = (userName) => {
+    const initials = userName
+      .split(" ")
+      .map((word) => word.charAt(0))
+      .join("")
+      .toUpperCase();
+    return initials;
+  };
+
+  // Get initials
+  const userImage = generateInitials("Atul Tingre");
+
   const contextValue = {
     token,
     isAdmin,
@@ -121,6 +133,7 @@ const StoreContextProvider = ({ children }) => {
     handleLogout,
     editingProduct,
     setEditingProduct,
+    userImage,
   };
 
   return (
