@@ -5,9 +5,9 @@ import { useStore } from "../../../context/StoreContext";
 import api from "../../../config/api";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 
-const AddProduct = ({ initialValues }) => {
+const AddProduct = ({ editingProduct }) => {
   const { fetchProducts } = useStore();
-  const [formData, setFormData] = useState(initialValues || {});
+  const [formData, setFormData] = useState(editingProduct || {});
   const [imageURL, setImageURL] = useState("");
   const [previewURL, setPreviewURL] = useState("");
   const [imageFile, setImageFile] = useState(null);
@@ -26,7 +26,7 @@ const AddProduct = ({ initialValues }) => {
   const addProduct = async (formData) => {
     try {
       let image = imageURL;
-      if (!initialValues) {
+      if (!editingProduct) {
         const storageRef = firebase.storage().ref();
         const fileRef = storageRef.child(imageFile.name);
         await fileRef.put(imageFile);
@@ -44,7 +44,7 @@ const AddProduct = ({ initialValues }) => {
         }
       } else {
         // For updating existing product, check if new image was uploaded
-        if (imageURL !== initialValues.image) {
+        if (imageURL !== editingProduct.image) {
           const storageRef = firebase.storage().ref();
           const fileRef = storageRef.child(imageFile.name);
           await fileRef.put(imageFile);
@@ -52,7 +52,7 @@ const AddProduct = ({ initialValues }) => {
 
           const response = await api(
             "PUT",
-            `/product/update/${initialValues._id}`,
+            `/product/update/${editingProduct._id}`,
             {
               ...formData,
               image: url,
@@ -66,7 +66,7 @@ const AddProduct = ({ initialValues }) => {
           }
         } else {
           // If no new image was uploaded, keep the existing image
-          image = initialValues.image;
+          image = editingProduct.image;
         }
       }
     } catch (error) {
@@ -76,7 +76,6 @@ const AddProduct = ({ initialValues }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("formData: ", formData);
     addProduct(formData);
   };
 
@@ -86,10 +85,11 @@ const AddProduct = ({ initialValues }) => {
         <div className="space-y-4">
           <div className="pb-12">
             <h2 className="text-base font-semibold leading-7 text-gray-900">
-              Product Details
+              {editingProduct ? "Update Product Details" : "Product Details"}
             </h2>
             <p className="mt-1 text-sm leading-6 text-gray-600">
-              This information will be displayed as a product.
+              This information will be {editingProduct && "update and"}{" "}
+              displayed as a product.
             </p>
 
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -187,9 +187,9 @@ const AddProduct = ({ initialValues }) => {
                 </label>
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                   <div className="text-center">
-                    {previewURL || initialValues?.image ? (
+                    {previewURL || editingProduct?.image ? (
                       <img
-                        src={previewURL || initialValues?.image}
+                        src={previewURL || editingProduct?.image}
                         alt="image"
                         name="image"
                       />
@@ -222,14 +222,21 @@ const AddProduct = ({ initialValues }) => {
                 </div>
               </div>
             </div>
-            <div className="mt-10">
+            <div className="mt-10 flex gap-5">
               <button
                 type="submit"
                 className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Add Product
               </button>
+              <button
+                onClick={() => navigate("/")}
+                className="block w-full rounded-md bg-red-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+              >
+                Cancel
+              </button>
             </div>
+            <div className="mt-10"></div>
           </div>
         </div>
       </form>

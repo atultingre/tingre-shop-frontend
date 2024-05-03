@@ -7,9 +7,11 @@ export const StoreContext = createContext(null);
 const StoreContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({});
   const [products, setProducts] = useState([]);
+  const [editingProduct, setEditingProduct] = useState(null);
+
   const navigate = useNavigate();
 
-  // const url = `http://localhost:8000/api${url}`;
+  // const url = `http://localhost:8000/api`;
   const url = `https://tingre-shop-backend.onrender.com/api`;
   const deliveryCost = 1;
   const isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
@@ -117,6 +119,8 @@ const StoreContextProvider = ({ children }) => {
     userName,
     userEmail,
     handleLogout,
+    editingProduct,
+    setEditingProduct,
   };
 
   return (
