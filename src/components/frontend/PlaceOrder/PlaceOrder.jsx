@@ -181,7 +181,7 @@ const PlaceOrder = () => {
                     name="country"
                     type="text"
                     onChange={onChangeHandler}
-                    autoComplete="country"
+                    autoComplete="country-name"
                     className="block w-full  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -200,7 +200,7 @@ const PlaceOrder = () => {
                     name="street"
                     id="street"
                     onChange={onChangeHandler}
-                    autoComplete="street"
+                    autoComplete="street-address"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -257,7 +257,7 @@ const PlaceOrder = () => {
                     name="zipcode"
                     id="zipcode"
                     onChange={onChangeHandler}
-                    autoComplete="zipcode"
+                    autoComplete="postal-code"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>

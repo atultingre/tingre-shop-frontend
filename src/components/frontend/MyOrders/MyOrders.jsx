@@ -9,7 +9,10 @@ const MyOrders = () => {
 
   const fetchOrders = async () => {
     const response = await getUserOrders(token);
-    setData(response.data);
+    const sortedOrders = response.data.sort((a, b) => {
+      return new Date(b.date) - new Date(a.date); 
+    });
+    setData(sortedOrders);
   };
 
   useEffect(() => {
@@ -63,7 +66,7 @@ const MyOrders = () => {
       ),
     },
     {
-      title: "Action",
+      title: "Track",
       key: "action",
       render: () => (
         <button onClick={fetchOrders}>
@@ -96,7 +99,12 @@ const MyOrders = () => {
       <h2 className="flex justify-center text-xl items-center w-full m-auto">
         My Orders
       </h2>
-      <Table columns={columns} dataSource={data} rowKey="_id" />
+      <Table
+        columns={columns}
+        dataSource={data}
+        rowKey="_id"
+        scroll={{ x: "" }}
+      />
     </div>
   );
 };

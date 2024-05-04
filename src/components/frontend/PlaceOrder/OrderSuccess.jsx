@@ -7,7 +7,7 @@ const OrderSuccess = () => {
   return (
     <div className="flex justify-center items-center flex-col">
       <Lottie
-        className="min-w-[400px]"
+        className="max-w-[400px]"
         loop={true}
         autoplay={true}
         animationData={success}
