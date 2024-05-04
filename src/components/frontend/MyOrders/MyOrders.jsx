@@ -2,17 +2,24 @@ import { useEffect, useState } from "react";
 import { useStore } from "../../../context/StoreContext";
 import { Table } from "antd";
 import { getUserOrders } from "../../../config/apiRequests";
+import Loading from "../../Loading/Loading";
 
 const MyOrders = () => {
   const [data, setData] = useState([]);
-  const { token } = useStore();
+  const { token, loading, setLoading } = useStore();
 
   const fetchOrders = async () => {
-    const response = await getUserOrders(token);
-    const sortedOrders = response.data.sort((a, b) => {
-      return new Date(b.date) - new Date(a.date); 
-    });
-    setData(sortedOrders);
+    try {
+      const response = await getUserOrders(token);
+      const sortedOrders = response.data.sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+      });
+      setData(sortedOrders);
+    } catch (error) {
+      console.log("error: ", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -99,12 +106,16 @@ const MyOrders = () => {
       <h2 className="flex justify-center text-xl items-center w-full m-auto">
         My Orders
       </h2>
-      <Table
-        columns={columns}
-        dataSource={data}
-        rowKey="_id"
-        scroll={{ x: "" }}
-      />
+      {loading ? (
+        <Loading />
+      ) : (
+        <Table
+          columns={columns}
+          dataSource={data}
+          rowKey="_id"
+          scroll={{ x: "" }}
+        />
+      )}
     </div>
   );
 };

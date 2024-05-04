@@ -37,6 +37,7 @@ const StoreContextProvider = ({ children }) => {
   }, []);
 
   const fetchProducts = async () => {
+    setLoading(true);
     try {
       const response = await getProductList();
       const { data } = response;
@@ -45,6 +46,8 @@ const StoreContextProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
     }
   };
 

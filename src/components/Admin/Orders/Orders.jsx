@@ -2,13 +2,17 @@ import { useEffect, useState } from "react";
 import { Table, Select } from "antd";
 import { toast } from "react-toastify";
 import { getOrderList, updateOrderStatus } from "../../../config/apiRequests";
+import { useStore } from "../../../context/StoreContext";
+import Loading from "../../Loading/Loading";
 
 const { Option } = Select;
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
+  const { loading, setLoading } = useStore();
 
   const fetchAllOrders = async () => {
+    setLoading(true);
     try {
       const response = await getOrderList();
       if (response.success) {
@@ -16,6 +20,8 @@ const Orders = () => {
       }
     } catch (error) {
       toast.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -106,12 +112,16 @@ const Orders = () => {
       <h2 className="flex justify-center text-xl items-center w-full m-auto">
         Orders
       </h2>
-      <Table
-        dataSource={orders}
-        columns={columns}
-        rowKey="_id"
-        scroll={{ x: "max-content" }}
-      />
+      {!loading ? (
+        <Table
+          dataSource={orders}
+          columns={columns}
+          rowKey="_id"
+          scroll={{ x: "max-content" }}
+        />
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 };

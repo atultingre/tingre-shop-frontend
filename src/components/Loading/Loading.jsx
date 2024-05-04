@@ -3,7 +3,7 @@ import loaderAnimation from "./loader.json";
 
 const Loading = () => {
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col mt-[200px] items-center justify-center">
       <Lottie
         className="max-w-[400px]"
         loop={true}
