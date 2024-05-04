@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { loginUser } from "../../../config/apiRequests";
+import { useStore } from "../../../context/StoreContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const { loading, setLoading, navigate } = useStore();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
-      const response = await loginUser(email, password)
+      const response = await loginUser(email, password);
       localStorage.setItem("token", response?.token);
       localStorage.setItem("email", response?.email);
       localStorage.setItem("isAdmin", response?.isAdmin);
@@ -19,6 +21,8 @@ const Login = () => {
       navigate("/");
     } catch (error) {
       console.error("Login Error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -28,10 +32,10 @@ const Login = () => {
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
+            src="./logo.png"
+            alt="Tingre Shop"
           />
-          <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          <h2 className="mt-2 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Login to Tingre Shop
           </h2>
         </div>
@@ -93,7 +97,11 @@ const Login = () => {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Login
+                {loading ? (
+                  <div className="w-4 h-4 border-2 border-white rounded-md animate-spin"></div>
+                ) : (
+                  "Login"
+                )}
               </button>
             </div>
           </form>

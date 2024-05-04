@@ -14,6 +14,7 @@ import PlaceOrder from "./components/frontend/PlaceOrder/PlaceOrder";
 import Orders from "./components/Admin/Orders/Orders";
 import AddProduct from "./components/Admin/Product/AddProduct";
 import OrderSuccess from "./components/frontend/PlaceOrder/OrderSuccess";
+import Profile from "./components/Profile/Profile";
 
 const App = () => {
   const { token, isAdmin } = useStore();
@@ -37,10 +38,17 @@ const App = () => {
           <Route path="/list" element={<ProductList />} />
           <Route path="/cart" element={<ShoppingCart />} />
           <Route path="/place" element={<PlaceOrder />} />
-          <Route path="/add" element={<AddProduct />} />
-          <Route path="/orders" element={<Orders />} />
           <Route path="/myorders" element={<MyOrders />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/success" element={<OrderSuccess />} />
+          <Route
+            path="/orders"
+            element={isAdmin ? <Orders /> : <Navigate to={"/"} />}
+          />
+          <Route
+            path="/add"
+            element={isAdmin ? <AddProduct /> : <Navigate to={"/"} />}
+          />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

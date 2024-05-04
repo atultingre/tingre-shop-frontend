@@ -13,6 +13,7 @@ const StoreContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({});
   const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const deliveryCost = 1;
@@ -123,6 +124,8 @@ const StoreContextProvider = ({ children }) => {
     editingProduct,
     setEditingProduct,
     userImage,
+    loading,
+    setLoading,
   };
 
   return (
