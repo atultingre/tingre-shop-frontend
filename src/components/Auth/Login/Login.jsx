@@ -70,14 +70,14 @@ const Login = () => {
                 >
                   Password
                 </label>
-                {/* <div className="text-sm">
-                  <a
-                    href="#"
+                <div className="text-sm">
+                  <NavLink
+                    to="/reset"
                     className="font-semibold text-indigo-600 hover:text-indigo-500"
                   >
                     Forgot password?
-                  </a>
-                </div> */}
+                  </NavLink>
+                </div>
               </div>
               <div className="mt-2">
                 <input

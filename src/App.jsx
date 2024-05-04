@@ -14,7 +14,8 @@ import PlaceOrder from "./components/frontend/PlaceOrder/PlaceOrder";
 import Orders from "./components/Admin/Orders/Orders";
 import AddProduct from "./components/Admin/Product/AddProduct";
 import OrderSuccess from "./components/frontend/PlaceOrder/OrderSuccess";
-import Profile from "./components/Profile/Profile";
+import Profile from "./components/Auth/Profile/Profile";
+import ResetPassword from "./components/Auth/ResetPassword/ResetPassword";
 
 const App = () => {
   const { token, isAdmin } = useStore();
@@ -29,6 +30,10 @@ const App = () => {
         <Route
           path="/register"
           element={!token ? <Register /> : <Navigate to={"/"} />}
+        />
+        <Route
+          path="/reset"
+          element={!token ? <ResetPassword /> : <Navigate to={"/"} />}
         />
         <Route
           path="/"

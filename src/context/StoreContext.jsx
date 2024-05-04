@@ -34,15 +34,17 @@ const StoreContextProvider = ({ children }) => {
       }
     }
     loadData();
-  }, []);
+  }, [token]);
 
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await getProductList();
-      const { data } = response;
-      if (response?.success) {
-        setProducts(data);
+      if (token) {
+        const response = await getProductList();
+        const { data } = response;
+        if (response?.success) {
+          setProducts(data);
+        }
       }
     } catch (error) {
       console.error("Error fetching products:", error);

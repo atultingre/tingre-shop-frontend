@@ -27,6 +27,9 @@ export const loginUser = async (email, password) => {
 export const registerUser = async (formData) => {
   return await api("POST", "/user/register", formData);
 };
+export const resetUserPassword = async (formData) => {
+  return await api("POST", "/user/reset", formData);
+};
 
 export const getUserOrders = async (token) => {
   return await api("POST", "/order/userorders", {}, { token });
