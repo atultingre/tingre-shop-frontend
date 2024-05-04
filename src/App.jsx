@@ -13,6 +13,7 @@ import MyOrders from "./components/frontend/MyOrders/MyOrders";
 import PlaceOrder from "./components/frontend/PlaceOrder/PlaceOrder";
 import Orders from "./components/Admin/Orders/Orders";
 import AddProduct from "./components/Admin/Product/AddProduct";
+import OrderSuccess from "./components/frontend/PlaceOrder/OrderSuccess";
 
 const App = () => {
   const { token, isAdmin } = useStore();
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="/add" element={<AddProduct />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/myorders" element={<MyOrders />} />
+          <Route path="/success" element={<OrderSuccess />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useStore } from "../../../context/StoreContext";
-import axios from "axios";
 import { toast } from "react-toastify";
+import { placeOrders } from "../../../config/apiRequests";
 
 const PlaceOrder = () => {
   const {
@@ -11,7 +11,6 @@ const PlaceOrder = () => {
     getTotalCartAmount,
     token,
     navigate,
-    url,
     setCartItems,
   } = useStore();
 
@@ -45,7 +44,7 @@ const PlaceOrder = () => {
         orderItems.push(itemInfo);
       }
     });
-    console.log("data.firstName: ", data.firstName);
+
     let orderData = {
       address: {
         firstName: data.firstName,
@@ -61,16 +60,12 @@ const PlaceOrder = () => {
       items: orderItems,
       amount: getTotalCartAmount() + deliveryCost,
     };
-    console.log("orderData: ", orderData);
 
-    let response = await axios.post(`${url}/order/place`, orderData, {
-      headers: { token },
-    });
+    const response = await placeOrders(orderData, token);
 
-    if (response.data.success === true) {
-      toast.success(response.data.message);
+    if (response.success === true) {
       setCartItems({});
-      navigate("/myorders");
+      navigate("/success");
     } else {
       toast.error("Error placing order.");
     }

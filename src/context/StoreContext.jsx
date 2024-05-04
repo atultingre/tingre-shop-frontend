@@ -1,7 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "../config/api";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {
+  addProductToCart,
+  getCartItems,
+  getProductList,
+  removeFromCart,
+} from "../config/apiRequests";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = ({ children }) => {
@@ -10,9 +15,6 @@ const StoreContextProvider = ({ children }) => {
   const [editingProduct, setEditingProduct] = useState(null);
 
   const navigate = useNavigate();
-
-  // const url = `http://localhost:8000`;
-  const url = `https://tingre-shop-backend.onrender.com`;
   const deliveryCost = 1;
   const isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
   const token = localStorage.getItem("token");
@@ -35,7 +37,7 @@ const StoreContextProvider = ({ children }) => {
 
   const fetchProducts = async () => {
     try {
-      const response = await api("GET", "/product/list");
+      const response = await getProductList();
       const { data } = response;
       if (response?.success) {
         setProducts(data);
@@ -46,12 +48,8 @@ const StoreContextProvider = ({ children }) => {
   };
 
   const loadCartData = async (token) => {
-    const response = await axios.post(
-      `${url}/api/cart/get`,
-      {},
-      { headers: { token } }
-    );
-    setCartItems(response?.data?.cartData);
+    const response = await getCartItems(token);
+    setCartItems(response?.cartData);
   };
 
   const addToCart = async (itemId) => {
@@ -61,11 +59,7 @@ const StoreContextProvider = ({ children }) => {
       setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
     }
     if (token) {
-      await axios.post(
-        `${url}/api/cart/add`,
-        { itemId },
-        { headers: { token } }
-      );
+      await addProductToCart(itemId, token);
     }
   };
 
@@ -73,11 +67,7 @@ const StoreContextProvider = ({ children }) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
 
     if (token) {
-      await axios.post(
-        `${url}/api/cart/remove`,
-        { itemId },
-        { headers: { token } }
-      );
+      await removeFromCart(itemId, token);
     }
   };
 
@@ -126,7 +116,6 @@ const StoreContextProvider = ({ children }) => {
     removeFormCart,
     getTotalCartAmount,
     deliveryCost,
-    url,
     navigate,
     userName,
     userEmail,

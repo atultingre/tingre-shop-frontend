@@ -1,8 +1,8 @@
 import { useStore } from "../../context/StoreContext";
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import api from "../../config/api";
+import { removeProduct } from "../../config/apiRequests";
 
 const DeleteModal = ({ productId, openDeleteModal, setOpenDeleteModal }) => {
   const cancelButtonRef = useRef(null);
@@ -10,9 +10,7 @@ const DeleteModal = ({ productId, openDeleteModal, setOpenDeleteModal }) => {
 
   const deleteProduct = async () => {
     try {
-      const response = await api("POST", `/product/remove`, {
-        id: productId,
-      });
+      const response = await removeProduct(productId);
       if (response.success) {
         fetchProducts();
       }
@@ -25,7 +23,7 @@ const DeleteModal = ({ productId, openDeleteModal, setOpenDeleteModal }) => {
     setOpenDeleteModal(false);
     deleteProduct();
   };
-  
+
   return (
     <div>
       <Transition.Root show={openDeleteModal} as={Fragment}>

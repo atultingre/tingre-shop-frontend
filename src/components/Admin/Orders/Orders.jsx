@@ -1,19 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Table, Select } from "antd";
-import { useStore } from "../../../context/StoreContext";
-import api from "../../../config/api";
 import { toast } from "react-toastify";
-import { assets } from "../../../assets/assets";
+import { getOrderList, updateOrderStatus } from "../../../config/apiRequests";
 
 const { Option } = Select;
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
-  const { url } = useStore();
 
   const fetchAllOrders = async () => {
     try {
-      const response = await api("GET", "/order/list");
+      const response = await getOrderList();
       if (response.success) {
         setOrders(response.data);
       }
@@ -23,12 +20,8 @@ const Orders = () => {
   };
 
   const statusHandler = async (value, orderId) => {
-    console.log("value: ", value);
     try {
-      const response = await api("POST", "/order/status", {
-        orderId,
-        status: value,
-      });
+      const response = await updateOrderStatus(orderId, value);
       console.log("response: ", response);
       if (response.success) {
         await fetchAllOrders();

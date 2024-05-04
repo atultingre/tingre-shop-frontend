@@ -140,7 +140,6 @@ const Header = () => {
                                 {({ active }) => (
                                   <NavLink
                                     to={item.to}
-                                    to={item.to}
                                     onClick={item.onClick}
                                     className={classNames(
                                       active ? "bg-gray-100" : "",

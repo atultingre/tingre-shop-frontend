@@ -1,22 +1,15 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useStore } from "../../../context/StoreContext";
-import { assets } from "../../../assets/assets";
 import { Table } from "antd";
+import { getUserOrders } from "../../../config/apiRequests";
 
 const MyOrders = () => {
   const [data, setData] = useState([]);
-  const { url, token } = useStore();
+  const { token } = useStore();
 
-  console.log("data: ", data);
   const fetchOrders = async () => {
-    const response = await axios.post(
-      url + "/order/userorders",
-      {},
-      { headers: { token } }
-    );
-    setData(response.data.data);
-    console.log("response.data.data: ", response.data.data);
+    const response = await getUserOrders(token);
+    setData(response.data);
   };
 
   useEffect(() => {

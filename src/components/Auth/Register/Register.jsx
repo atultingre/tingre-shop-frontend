@@ -1,6 +1,6 @@
 import { useState } from "react";
-import api from "../../../config/api";
 import { NavLink } from "react-router-dom";
+import { registerUser } from "../../../config/apiRequests";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +22,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      await api("POST", "/user/register", formData);
+      await registerUser(formData);
     } catch (error) {
       console.error("Register Error:", error);
       if (error.response && error.response.data) {

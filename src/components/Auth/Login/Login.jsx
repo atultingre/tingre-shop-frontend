@@ -1,6 +1,6 @@
 import { useState } from "react";
-import api from "../../../config/api";
 import { NavLink, useNavigate } from "react-router-dom";
+import { loginUser } from "../../../config/apiRequests";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -11,7 +11,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await api("POST", "/user/login", { email, password });
+      const response = await loginUser(email, password)
       localStorage.setItem("token", response?.token);
       localStorage.setItem("email", response?.email);
       localStorage.setItem("isAdmin", response?.isAdmin);

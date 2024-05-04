@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import firebase from "../../../config/firebase";
 import { useStore } from "../../../context/StoreContext";
-import api from "../../../config/api";
 import { PhotoIcon } from "@heroicons/react/24/solid";
+import { addProduct, updateProduct } from "../../../config/apiRequests";
 
 const AddProduct = ({ editingProduct }) => {
   const { fetchProducts } = useStore();
@@ -23,7 +23,7 @@ const AddProduct = ({ editingProduct }) => {
     setPreviewURL(URL.createObjectURL(e.target.files[0]));
   };
 
-  const addProduct = async (formData) => {
+  const addProducts = async (formData) => {
     try {
       let image = imageURL;
       if (!editingProduct) {
@@ -31,13 +31,8 @@ const AddProduct = ({ editingProduct }) => {
         const fileRef = storageRef.child(imageFile.name);
         await fileRef.put(imageFile);
         const url = await fileRef.getDownloadURL();
-
-        const response = await api("POST", "/product/add", {
-          ...formData,
-          image: url,
-        });
+        const response = await addProduct(formData, url);
         navigate("/");
-        console.log("response: ", response);
         if (response.success) {
           fetchProducts();
           setFormData("");
@@ -50,16 +45,9 @@ const AddProduct = ({ editingProduct }) => {
           await fileRef.put(imageFile);
           const url = await fileRef.getDownloadURL();
 
-          const response = await api(
-            "PUT",
-            `/product/update/${editingProduct._id}`,
-            {
-              ...formData,
-              image: url,
-            }
-          );
+          const productId = editingProduct._id;
+          const response = await updateProduct(productId, formData, url);
           navigate("/");
-          console.log("response: ", response);
           if (response.success) {
             fetchProducts();
             setFormData("");
@@ -76,7 +64,7 @@ const AddProduct = ({ editingProduct }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addProduct(formData);
+    addProducts(formData);
   };
 
   return (
